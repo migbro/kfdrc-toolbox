@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
 import sys
+if len(sys.argv) < 2 or sys.argv[1] == '-h' or sys.argv[1] == '--help':
+    sys.stderr.write('Quick and dirty vcf sample rename.  Pipe STDIN vcf and name of sample to use as arg\n'
+                     'Usage: ' + sys.argv[0] + ' <new_sample_name>\n')
+    exit(1)
 sname = sys.argv[1]
+
 f = 0
 for line in sys.stdin:
     if line[0:6] == '#CHROM' and f == 0:
