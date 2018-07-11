@@ -4,7 +4,7 @@ import sys
 sname = sys.argv[1]
 f = 0
 for line in sys.stdin:
-    if line[0:5] == '#CHROM' and f == 0:
+    if line[0:6] == '#CHROM' and f == 0:
         old = line.rstrip('\n').split('\t')
         sys.stderr.write('Replacing ' + old[9] + ' with ' + sname + '\n')
         old[9] = sname
