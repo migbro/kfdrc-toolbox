@@ -2,7 +2,6 @@
 
 import sevenbridges as sbg
 import sys
-import pdb
 config = sbg.Config(profile='cavatica')
 api = sbg.Api(config=config)
 
