@@ -20,7 +20,7 @@ for i in range(len(vcf_list) - 1):
         vcf1_root = os.path.basename(os.path.splitext(vcf1)[0])[:-4]
         vcf2 = vcf_list[k]
         vcf2_root = os.path.basename(os.path.splitext(vcf2)[0])[:-4]
-        super_root = + vcf1_root + '_vs_' + vcf2_root
+        super_root = vcf1_root + '_vs_' + vcf2_root
         cmd = bedtools + ' intersect -a ' + vcf1 + ' -b ' + vcf2 \
               + ' -v -sorted > ' + super_root + '.vcf 2> ' + super_root + '.errs'
         sys.stderr.write(cmd + '\n')
