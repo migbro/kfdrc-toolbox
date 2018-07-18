@@ -14,7 +14,8 @@ passed_attr = {}
 for fn in open(passed_list):
     fn = fn.rstrip('\n')
     fn_parts = os.path.basename(fn).split('.')
-    (fid, tool) = fn_parts[0].split('_')
+    fn_parts2 = fn_parts[0].split('_')
+    tool = fn_parts2[1]
     passed_attr[tool] = {}
     passed_attr[tool]['fn_root'] = fn_parts[0]
     passed_attr[tool]['path'] = fn
