@@ -18,11 +18,11 @@ for fn in open(comp_list):
     # fn_parts_b = fn_half[1].split('_')
     for fn2 in open(passed_list):
         fn2 = fn2.rstrip('\n')
-        fn2_root = os.path.basename(fn2).split('.')[0]
-        if fn2_root != fn_parts_a:
+        fn2_root = os.path.basename(fn2).split('.')
+        if fn2_root[0] != fn_parts_a:
             cmd = bedtools + ' closest -a ' + fn + ' -b ' \
-                  + fn2 + ' -d | sort -nk25 l_v_m_closest.bed | cut -f 1-7,13-19,25 > ' + fn_parts_a + '_' + fn2_root \
-                  + '.closest.bed'
+                  + fn2 + ' -d | sort -nk25 l_v_m_closest.bed | cut -f 1-7,13-19,25 > ' + fn_parts_a + '_' \
+                  + fn2_root[0] + '.closest.bed'
             subprocess.call(cmd, shell=True)
 
 
