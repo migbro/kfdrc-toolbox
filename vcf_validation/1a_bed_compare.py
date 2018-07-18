@@ -18,9 +18,9 @@ for i in range(len(file_list) - 1):
     for k in range(j, len(file_list), 1):
         # sys.stdout.write(vcf_list[i] + ' vs ' + vcf_list[k] + '\n')
         bed1 = file_list[i]
-        bed1_root = os.path.basename(os.path.splitext(bed1)[0])[:-4]
+        bed1_root = os.path.basename(os.path.splitext(bed1)[0]).split('.')[0]
         bed2 = file_list[k]
-        bed2_root = os.path.basename(os.path.splitext(bed2)[0])[:-4]
+        bed2_root = os.path.basename(os.path.splitext(bed2)[0]).split('.')[0]
         super_root = bed1_root + '_vs_' + bed2_root
         cmd = bedtools + ' intersect -a ' + bed1 + ' -b ' + bed2 \
               + ' -v -header 2> ' + super_root + '.errs > ' + super_root + '.bed'
