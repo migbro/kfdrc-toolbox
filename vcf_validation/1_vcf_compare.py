@@ -22,13 +22,13 @@ for i in range(len(vcf_list) - 1):
         vcf2_root = os.path.basename(os.path.splitext(vcf2)[0])[:-4]
         super_root = vcf1_root + '_vs_' + vcf2_root
         cmd = bedtools + ' intersect -a ' + vcf1 + ' -b ' + vcf2 \
-              + ' -v 2> ' + super_root + '.errs | gzip -c > ' + super_root + '.vcf.gz'
+              + ' -v -header 2> ' + super_root + '.errs | gzip -c > ' + super_root + '.vcf.gz'
         sys.stderr.write(cmd + '\n')
         subprocess.Popen(cmd, shell=True, stdin=None, stdout=None,
                          stderr=None, close_fds=True)
         super_root = vcf2_root + '_vs_' + vcf1_root
         cmd = bedtools + ' intersect -a ' + vcf2 + ' -b ' + vcf1 \
-              + ' -v 2> ' + super_root + '.errs | gzip -c > ' + super_root + '.vcf.gz'
+              + ' -v -header 2> ' + super_root + '.errs | gzip -c > ' + super_root + '.vcf.gz'
         sys.stderr.write(cmd + '\n')
         subprocess.Popen(cmd, shell=True, stdin=None, stdout=None,
                          stderr=None, close_fds=True)
