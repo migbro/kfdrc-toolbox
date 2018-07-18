@@ -23,13 +23,13 @@ for i in range(len(file_list) - 1):
         bed2_root = os.path.basename(os.path.splitext(bed2)[0]).split('.')[0]
         super_root = bed1_root + '_vs_' + bed2_root
         cmd = bedtools + ' intersect -a ' + bed1 + ' -b ' + bed2 \
-              + ' -v -header 2> ' + super_root + '.errs > ' + super_root + '.bed'
+              + ' -v -sorted 2> ' + super_root + '.errs > ' + super_root + '.bed'
         sys.stderr.write(cmd + '\n')
         subprocess.Popen(cmd, shell=True, stdin=None, stdout=None,
                          stderr=None, close_fds=True)
         super_root = bed2_root + '_vs_' + bed1_root
         cmd = bedtools + ' intersect -a ' + bed2 + ' -b ' + bed1 \
-              + ' -v -header 2> ' + super_root + '.errs > ' + super_root + '.bed'
+              + ' -v -sorted 2> ' + super_root + '.errs > ' + super_root + '.bed'
         sys.stderr.write(cmd + '\n')
         subprocess.Popen(cmd, shell=True, stdin=None, stdout=None,
                          stderr=None, close_fds=True)
