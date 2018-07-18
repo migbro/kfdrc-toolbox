@@ -10,5 +10,5 @@ for fn in open(sys.argv[1]):
         if int(info[-1]) > n:
             cur.close()
             break
-        else:
+        elif int(info[-1]) != -1:
             sys.stdout.write(line)
