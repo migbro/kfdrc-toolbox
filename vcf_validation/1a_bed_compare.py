@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# same as vcf compare, except for bed input
 
 import sys
 import os
@@ -16,19 +17,19 @@ j = 1
 for i in range(len(file_list) - 1):
     for k in range(j, len(file_list), 1):
         # sys.stdout.write(vcf_list[i] + ' vs ' + vcf_list[k] + '\n')
-        vcf1 = file_list[i]
-        vcf1_root = os.path.basename(os.path.splitext(vcf1)[0])[:-4]
-        vcf2 = file_list[k]
-        vcf2_root = os.path.basename(os.path.splitext(vcf2)[0])[:-4]
-        super_root = vcf1_root + '_vs_' + vcf2_root
-        cmd = bedtools + ' intersect -a ' + vcf1 + ' -b ' + vcf2 \
-              + ' -v -header 2> ' + super_root + '.errs | gzip -c > ' + super_root + '.vcf.gz'
+        bed1 = file_list[i]
+        bed1_root = os.path.basename(os.path.splitext(bed1)[0])[:-4]
+        bed2 = file_list[k]
+        bed2_root = os.path.basename(os.path.splitext(bed2)[0])[:-4]
+        super_root = bed1_root + '_vs_' + bed2_root
+        cmd = bedtools + ' intersect -a ' + bed1 + ' -b ' + bed2 \
+              + ' -v -header 2> ' + super_root + '.errs > ' + super_root + '.bed'
         sys.stderr.write(cmd + '\n')
         subprocess.Popen(cmd, shell=True, stdin=None, stdout=None,
                          stderr=None, close_fds=True)
-        super_root = vcf2_root + '_vs_' + vcf1_root
-        cmd = bedtools + ' intersect -a ' + vcf2 + ' -b ' + vcf1 \
-              + ' -v -header 2> ' + super_root + '.errs | gzip -c > ' + super_root + '.vcf.gz'
+        super_root = bed2_root + '_vs_' + bed1_root
+        cmd = bedtools + ' intersect -a ' + bed2 + ' -b ' + bed1 \
+              + ' -v -header 2> ' + super_root + '.errs > ' + super_root + '.bed'
         sys.stderr.write(cmd + '\n')
         subprocess.Popen(cmd, shell=True, stdin=None, stdout=None,
                          stderr=None, close_fds=True)
