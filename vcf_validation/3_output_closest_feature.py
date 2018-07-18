@@ -20,9 +20,8 @@ for fn in open(comp_list):
         fn2 = fn2.rstrip('\n')
         fn2_root = os.path.basename(fn2).split('.')
         if fn2_root[0] != fn_half[0]:
-            cmd = bedtools + ' closest -a ' + fn + ' -b ' + fn2 + ' -d > temp.bed; ' \
-                'sort temp.bed -nk25 > temp_sorted.bed; rm temp.bed;  cut -f 1-7,13-19,25 temp_sorted.bed > ' \
-                  + fn_half[0] + '_' + fn2_root[0] + '.closest.bed; rm temp_sorted.bed'
+            cmd = bedtools + ' closest -a ' + fn + ' -b ' \
+                  + fn2 + ' -d | sort -nk25 | cut -f 1-7,13-19,25 > ' + fn_half[0] + '_' + fn2_root[0] + '.closest.bed'
             sys.stderr.write(cmd + '\n')
             subprocess.call(cmd, shell=True)
 
