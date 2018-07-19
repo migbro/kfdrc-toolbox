@@ -12,4 +12,4 @@ for fn in open(sys.argv[1]):
             break
         elif int(info[-1]) != -1:
             line = line.rstrip('\n')
-            sys.stdout.write(line + fn + '\n')
+            sys.stdout.write(line + '\t' + fn + '\n')
