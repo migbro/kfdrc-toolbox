@@ -11,4 +11,5 @@ for fn in open(sys.argv[1]):
             cur.close()
             break
         elif int(info[-1]) != -1:
-            sys.stdout.write(line)
+            line = line.rstrip('\n')
+            sys.stdout.write(line + fn + '\n')
