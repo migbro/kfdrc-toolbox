@@ -93,7 +93,7 @@ else:
 # In[4]:
 
 
-files = api.files.query(project=project, tags=tag_search)
+files = api.files.query(project=project, tags=tag_search).all()
 sys.stderr.write('Getting files for ' + project + '\n')
 # dir(files)
 vcf_list = []
