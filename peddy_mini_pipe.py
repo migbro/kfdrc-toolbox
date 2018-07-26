@@ -18,3 +18,4 @@ for line in open(sys.argv[2]):
           + ped
     sys.stderr.write('Running peddy ' + cmd + '\n')
     subprocess.call(cmd, shell=True)
+    os.chdir('../')
