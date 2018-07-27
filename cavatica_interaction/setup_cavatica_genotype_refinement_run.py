@@ -10,8 +10,10 @@ import sevenbridges as sbg
 import sys
 from requests import request
 
-config = sbg.Config(profile='cavatica')
-api = sbg.Api(config=config)
+token = sys.argv[4]
+# config = sbg.Config(profile="cavatica")
+# api = sbg.Api(config=config)
+api = sbg.Api(url='https://cavatica-api.sbgenomics.com/v2', token=token)
 
 
 # ## Setup helper defs
@@ -38,7 +40,7 @@ def build_ped_entry(url, fam_id, out):
     for person in info.json()['results']:
         bs_url = 'http://localhost:1080' + person['_links']['biospecimens']
         bs_id = get_bs_id(bs_url)
-        if person['is_proband'] == True:
+        if person['is_proband'] is True:
             if person['gender'] in sex:
                 patient_sex = sex[person['gender']]
             ind_id = bs_id
@@ -57,7 +59,7 @@ def build_ped_entry(url, fam_id, out):
 
 
 def create_task(fam_id, ped_out, api, vcf, project):
-    task_name = 'refinement-' + fam_id
+    task_name = 'refinement-' + fam_id + '-RPT'
     app_name = project + '/kf-genotype-refinement-workflow'
     inputs = {}
     inputs['vqsr_vcf'] = vcf
@@ -69,7 +71,7 @@ def create_task(fam_id, ped_out, api, vcf, project):
         task.inputs['output_basename'] = task.id
         task.save()
         print(task.inputs['vqsr_vcf'].name, fam_id, task.id)
-    except SbError:
+    except:
         print('Could not create task for ' + task_name + '!\n')
 
 
