@@ -3,7 +3,7 @@
 # reads vcf and checks line-by-line to see if content is the same.  quite crude.
 
 import sys
-from gzip import gzip
+import gzip
 
 
 def open_vcf(vcf_fn):
