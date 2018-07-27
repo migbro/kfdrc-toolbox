@@ -47,13 +47,18 @@ def build_ped_entry(url, fam_id, out):
         else:
             paternal_id = bs_id
     new_ped = open(out, 'w')
+    # output proband
     new_ped.write('\t'.join((fam_id, ind_id, paternal_id, maternal_id, patient_sex, phenotype)) + '\n')
+    # output father
+    new_ped.write('\t'.join((fam_id, paternal_id, '0', '0', '1', '1')) + '\n')
+    # output mother
+    new_ped.write('\t'.join((fam_id, maternal_id, '0', '0', '2', '1')) + '\n')
     new_ped.close()
 
 
 def create_task(fam_id, ped_out, api, vcf, project):
     task_name = 'refinement-' + fam_id
-    app_name = project + '/gatk-genotype-refinement'
+    app_name = project + '/kf-genotype-refinement-workflow'
     inputs = {}
     inputs['vqsr_vcf'] = vcf
     inputs['snp_sites'] = api.files.query(project=project, names=['1000G_phase3_v4_20130502.sites.hg38.vcf'])[0]
