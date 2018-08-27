@@ -10,7 +10,7 @@ flist = []
 with open(sys.argv[2]) as f:
     flist = f.read().splitlines()
 sys.stderr.write('Getting files for project ' + project + '\n')
-files = api.files.query(project=project, names=flist)
+files = api.files.query(project=project, names=flist).all()
 
 for fn in files:
     sys.stderr.write('Downloading file ' + fn.name + '\n')
