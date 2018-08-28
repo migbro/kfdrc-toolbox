@@ -28,19 +28,19 @@ for line in task_dx_tbl:
     task_name = info[10]
     task_id = info[11]
     n = 0
-    dx_list = []
+    dx_list = {}
     # for all, in any dx, list which files to output to
     for i in range(7, 10, 1):
-        if info[i] != '0':
+        if info[i] != '0' and info[i] not in dx_list:
             n += 1
-            dx_list.append(dx_dict[info[i]])
+            dx_list[dx_dict[info[i]]] = 0
     # open maf file and iterate through, printing to appropriate mafs
     cur_maf = open(task_id + suffix)
     next(cur_maf)
     next(cur_maf)
-    for line in cur_maf:
+    for var in cur_maf:
         for dx in dx_list:
-            out_fh[dx].write(line)
+            out_fh[dx].write(var)
     cur_maf.close()
     sys.stderr.write(task_name + '\t' + str(n) + '\t' + '\t'.join(dx_list) + '\n')
 
