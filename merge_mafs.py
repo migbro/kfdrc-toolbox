@@ -21,7 +21,7 @@ dx_tbl.close()
 
 next(task_dx_tbl)
 
-suffix = 'strelka.vep.maf'
+suffix = '.strelka.vep.maf'
 
 for line in task_dx_tbl:
     info = line.rstrip('\n').split('\t')
