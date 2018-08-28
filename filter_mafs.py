@@ -12,13 +12,14 @@ fcol = int(sys.argv[3])
 for maf in maf_list:
     maf = maf.rstrip('\n')
     cur = open(maf)
-    new = open(os.path.basename(maf)[-4:] + 'filtered.maf', 'w')
+    new_fn = os.path.basename(maf)[-4:] + 'filtered.maf'
+    new = open(new_fn, 'w')
     head = next(cur)
     new.write(head)
     head = next(cur)
     new.write(head)
     head = head.rstrip('\n').split('\t')
-    sys.stderr.write('Filtering file ' + maf + ' on field ' + head[fcol] + '\n')
+    sys.stderr.write('Filtering file ' + maf + ' on field ' + head[fcol] + ' to file ' + new_fn + '\n')
     for entry in cur:
         info = entry.rstrip('\n').split('\t')
         if info[fcol] not in blacklist:
