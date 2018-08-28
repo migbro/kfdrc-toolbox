@@ -17,6 +17,8 @@ for maf in maf_list:
     new.write(head)
     head = next(cur)
     new.write(head)
+    head = head.rstrip('\n').split('\t')
+    sys.stderr.write('Filtering file ' + maf + ' on field ' + head[fcol] + '\n')
     for entry in cur:
         info = entry.rstrip('\n').split('\t')
         if info[fcol] not in blacklist:
