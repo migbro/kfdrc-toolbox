@@ -45,3 +45,5 @@ for line in task_dx_tbl:
     sys.stderr.write(task_name + '\t' + str(n) + '\n')
 
 task_dx_tbl.close()
+for fh in out_fh:
+    out_fh[fh].close()
