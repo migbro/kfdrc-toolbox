@@ -42,7 +42,7 @@ for line in task_dx_tbl:
         for dx in dx_list:
             out_fh[dx].write(line)
     cur_maf.close()
-    sys.stderr.write(task_name + '\t' + str(n) + '\n')
+    sys.stderr.write(task_name + '\t' + str(n) + '\t' + '\t'.join(dx_list) + '\n')
 
 task_dx_tbl.close()
 for fh in out_fh:
