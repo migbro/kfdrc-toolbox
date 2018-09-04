@@ -39,7 +39,7 @@ for line in task_dx_tbl:
         if dx not in s_dict:
             s_dict[dx] = []
             cnv_dict[dx] = {}
-            s_dict[dx].append(tum_bs_id)
+        s_dict[dx].append(tum_bs_id)
         for cnv in cur_cnv:
             data = cnv.rstrip('\n').split('\t')
             gene = data[0] + '\t' + data[1]
@@ -52,7 +52,7 @@ for line in task_dx_tbl:
 
 task_dx_tbl.close()
 for dx in cnv_dict:
-    out_fh[dx].write('\t'.join(s_dict[dx]) + '\n')
+    out_fh[dx].write('\t' + '\t'.join(s_dict[dx]) + '\n')
     for gene in cnv_dict[dx]:
         for samp in s_dict[dx]:
             if samp in cnv_dict[dx][gene]:
