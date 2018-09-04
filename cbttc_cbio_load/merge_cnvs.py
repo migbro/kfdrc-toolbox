@@ -35,15 +35,15 @@ for line in task_dx_tbl:
             dx_list[dx_dict[info[i]]] = 0
     # open maf file and iterate through, printing to appropriate mafs
     cur_cnv = open(task_id + suffix)
-    for cnv in cur_cnv:
-        data = cnv.rstrip('\n').split('\t')
-        gene = data[0] + '\t' + data[1]
-
-        for dx in dx_list:
-            if dx not in s_dict:
-                s_dict[dx] = []
-                cnv_dict[dx] = {}
+    for dx in dx_list:
+        if dx not in s_dict:
+            s_dict[dx] = []
+            cnv_dict[dx] = {}
             s_dict[dx].append(tum_bs_id)
+        for cnv in cur_cnv:
+            data = cnv.rstrip('\n').split('\t')
+            gene = data[0] + '\t' + data[1]
+
             if gene not in cnv_dict[dx]:
                 cnv_dict[dx][gene] = {}
             cnv_dict[dx][gene][tum_bs_id] = data[2]
