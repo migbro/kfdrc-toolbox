@@ -60,4 +60,4 @@ for dx in cnv_dict:
                 out_fh[dx].write('\t' + cnv_dict[dx][gene][samp])
             else:
                 out_fh[dx].write('\t0')
-    out_fh[dx].write('\n')
+        out_fh[dx].write('\n')
