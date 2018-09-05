@@ -59,5 +59,5 @@ for dx in cnv_dict:
             if samp in cnv_dict[dx][gene]:
                 out_fh[dx].write('\t' + cnv_dict[dx][gene][samp])
             else:
-                out_fh[dx].write('\t0')
+                out_fh[dx].write('\t2')
         out_fh[dx].write('\n')
