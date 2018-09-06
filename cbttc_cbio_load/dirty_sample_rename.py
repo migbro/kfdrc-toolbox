@@ -21,11 +21,13 @@ for line in rn_tbl:
 rn_tbl.close()
 
 maf = open(sys.argv[2])
-head = next(maf)
 maf_out = open(prefix + '.strelka.vep.filtered.maf', 'w')
 
-
+head = next(maf)
 maf_out.write(head)
+head = next(maf)
+maf_out.write(head)
+
 for line in maf:
     data = line.split('\t')
     data[14] = samp_ind[data[14]]
