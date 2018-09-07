@@ -27,10 +27,9 @@ def process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cnv_file):
     for cnv in open(cnv_file):
         cnv_data = cnv.rstrip('\n').split('\t')
         gene = cnv_data[0] + '\t' + cnv_data[1]
-        for dx in dx_list:
-            if gene not in cnv_dict[dx]:
-                cnv_dict[dx][gene] = {}
-            cnv_dict[dx][gene][samp_id] = cnv_data[2]
+        if gene not in cnv_dict[cbio_short]:
+            cnv_dict[cbio_short][gene] = {}
+        cnv_dict[cbio_short][gene][samp_id] = cnv_data[2]
     return cnv_dict, s_dict
 
 
