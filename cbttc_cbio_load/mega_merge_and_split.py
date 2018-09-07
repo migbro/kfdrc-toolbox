@@ -129,7 +129,7 @@ for line in mega_sample_sheet:
     data = line.rstrip('\n').split('\t')
     dx = data[3]
     pt_id = data[0]
-    bs_ids = data[2]
+    bs_ids = data[2].split(';')
     samp_id = data[1]
     norm_id = data[-2]
     if data[3] != '':
@@ -154,7 +154,7 @@ for line in mega_sample_sheet:
                     (cnv_dict, s_dict) = process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cur_cnv)
                     sys.stderr.write('Completed processing ' + cur_cnv + '\n')
                     sys.stderr.flush()
-
+mega_sample_sheet.close()
 sys.stderr.write('Completed iterating through sample sheet. Outputting cnv files\n')
 
 for dx in cnv_dict:
@@ -186,3 +186,4 @@ for keys in patient_fh:
     sample_fh[keys].close()
     cnv_fh[keys].close()
     maf_fh[keys].close()
+sys.stderr.write('Fin!\n')
