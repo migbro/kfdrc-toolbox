@@ -138,12 +138,12 @@ for line in mega_patient_sheet:
             for bs_id in bs_ids:
                 if bs_id in dna_task_dict:
                     sys.stderr.write('DNA data found for ' + bs_id + '\n')
-                    cur_maf = dna_task_dict[bs_id] + maf_suffix
+                    cur_maf = maf_dir + '/' + dna_task_dict[bs_id] + maf_suffix
                     sys.stderr.write('Processing maf ' + cur_maf)
                     sys.stderr.flush()
                     process_maf(cur_maf, maf_exc, maf_fh[cbio_short], samp_id, norm_id)
                     sys.stderr.write('Completed processing ' + cur_maf + '\n')
-                    cur_cnv = dna_task_dict[bs_id] + cnv_suffix
+                    cur_cnv = cnv_dir + '/' + dna_task_dict[bs_id] + cnv_suffix
                     sys.stderr.write('Processing cnv ' + cur_cnv)
                     sys.stderr.flush()
                     (cnv_dict, s_dict) = process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cur_cnv)
