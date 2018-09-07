@@ -29,6 +29,7 @@ next(super_tbl)
 pt_super = {}
 # will be dict of bs ids as keys - keys have array with pt id, ext id, and array of locations
 samp_super = {}
+samp_patch = {}
 norm_index = {}
 black_list = {}
 for bs_id in cl_fh:
@@ -74,23 +75,27 @@ for line in super_tbl:
     site_prime = sites.split('|')
     for i in range(0, len(tum_bs), 1):
         if tum_bs[i] not in black_list:
-            samp_super[tum_bs[i]] = []
-            samp_super[tum_bs[i]].append(pt_id)
-            samp_super[tum_bs[i]].append(tum_ext[i])
-            cur_sites = ''
-            if site_prime != '':
-                cur_sites = list(set(site_prime[i].split(';')))
-                try:
-                    cur_sites.remove('')
-                except:
-                    i_dont_care = 1
-            samp_super[tum_bs[i]].append(cur_sites)
-    norm_bs = info[-3].split(',')
-    norm_ext = info[-2].split(',')
-    for i in range(0, len(norm_bs), 1):
-        norm_index[norm_bs[i]] = norm_ext[i]
+            if tum_ext[i] not in samp_super:
+                samp_super[tum_ext[i]] = []
+                samp_super[tum_ext[i]].append(pt_id)
+                samp_super[tum_ext[i]].append(tum_bs[i])
+                cur_sites = ''
+                if site_prime != '':
+                    cur_sites = list(set(site_prime[i].split(';')))
+                    try:
+                        cur_sites.remove('')
+                    except:
+                        i_dont_care = 1
+                samp_super[tum_ext[i]].append(cur_sites)
+            else:
+                samp_super[tum_ext[i]][1] += ';' + tum_bs[i]
+        samp_patch[tum_bs[i]] = tum_ext[i]
+        norm_bs = info[-3].split(',')
+        norm_ext = info[-2].split(',')
+        for i in range(0, len(norm_bs), 1):
+            norm_index[norm_bs[i]] = norm_ext[i]
 pt_check = {}
-
+ext_check = {}
 pt_head = '#Patient Identifier\tGENDER\tAGE\tTUMOR_SITE\tRACE\tETHNICITY\n#Patient identifier' \
           '\tGender or sex of the patient\tAge at which the condition or disease was first diagnosed, in years' \
           '\tTumor location\tracial demographic\tethnic demographic\n#STRING\tSTRING\tNUMBER\tSTRING\tSTRING' \
@@ -119,14 +124,17 @@ next(dna)
 for data in dna:
     info = data.rstrip('\n').split('\t')
     tum_bs = info[2]
-    if tum_bs not in black_list:
+    ext = samp_patch[tum_bs]
+    if tum_bs not in black_list and ext not in ext_check:
+        ext_check[ext] = 1
         norm_bs = info[5]
         c_event = info[1]
-        bs_ref = samp_super[tum_bs]
-        pt_id = bs_ref[0]
-        sample_id = bs_ref[1]
+        ext_ref = samp_super[ext]
+        pt_id = ext_ref[0]
+        sample_id = ext
+        spec_ids = ext_ref[1]
         cancer_type = ';'.join(recon_dx_index[c_event])
-        bs_loc = ';'.join(bs_ref[2])
+        bs_loc = ';'.join(ext_ref[2])
         tum_type = 'Primary'
         if cancer_type == 'Metastatic secondary tumors':
             tum_type = 'Metastatic'
@@ -135,27 +143,30 @@ for data in dna:
             pt_check[pt_id] = 1
             pt_out.write(pt_id + '\t' + pt_super[pt_id] + '\n')
         # pdb.set_trace()
-        samp_out.write('\t'.join((pt_id, sample_id, tum_bs, cancer_type, cancer_type, bs_loc, tum_type,
+        samp_out.write('\t'.join((pt_id, sample_id, spec_ids, cancer_type, cancer_type, bs_loc, tum_type,
                                   norm_sample_id, norm_bs)) + '\n')
 
 next(rna)
 for data in rna:
     info = data.rstrip('\n').split('\t')
     tum_bs = info[0]
-    if tum_bs not in black_list:
+    ext = samp_patch[tum_bs]
+    if tum_bs not in black_list and ext not in ext_check:
         (bo_sample_id, assay) = info[1].split('.')
         c_info = bo_sample_id.split('-')
         c_event = c_info[0] + '-' + c_info[1]
-        bs_ref = samp_super[tum_bs]
-        pt_id = bs_ref[0]
+        ext_ref = samp_super[ext]
+        pt_id = ext_ref[0]
         bo_pt_id = info[3]
-        sample_id = bs_ref[1]
+        sample_id = ext
+        spec_ids = ext_ref[1]
         cancer_type = ';'.join(recon_dx_index[c_event])
-        bs_loc = ';'.join(bs_ref[2])
+        bs_loc = ';'.join(ext_ref[2])
         tum_type = 'Primary'
         if cancer_type == 'Metastatic secondary tumors':
             tum_type = 'Metastatic'
         if pt_id not in pt_check:
             pt_check[pt_id] = 1
             pt_out.write(pt_id + '\t' + pt_super[pt_id] + '\n')
-        samp_out.write('\t'.join((pt_id, sample_id, tum_bs, cancer_type, cancer_type, bs_loc, tum_type, '', '')) + '\n')
+        samp_out.write('\t'.join((pt_id, sample_id, spec_ids, cancer_type, cancer_type, bs_loc, tum_type, '', ''))
+                       + '\n')
