@@ -40,6 +40,7 @@ cnv_dir = sys.argv[4]
 maf_dir = sys.argv[5]
 mega_sample_sheet = open(sys.argv[6])
 mega_patient_sheet = open(sys.argv[7])
+skip_data = sys.argv[8]
 header = '#version 2.4\nHugo_Symbol\tEntrez_Gene_Id\tCenter\tChromosome\tStart_Position\tEnd_Position\tStrand' \
          '\tVariant_Classification\tVariant_Type\tReference_Allele\tTumor_Seq_Allele1\tTumor_Seq_Allele2\tdbSNP_RS' \
          '\tdbSNP_Val_Status\tTumor_Sample_Barcode\tMatched_Norm_Sample_Barcode\tMatch_Norm_Seq_Allele1' \
@@ -81,6 +82,8 @@ pt_head = '#Patient Identifier\tGENDER\tAGE\tTUMOR_SITE\tRACE\tETHNICITY\n#Patie
 blacklist = {}
 next(dx_fh)
 temp = {}
+if skip_data == 'y':
+    sys.stderr.write('Skip data flag given, will only output sample sheets\n')
 for line in dx_fh:
     info = line.rstrip('\n').split('\t')
     cbttc_dx = info[0]
@@ -89,16 +92,17 @@ for line in dx_fh:
     if cbio_short not in temp:
         temp[cbio_short] = 1
         os.mkdir(cbio_short)
-
-        maf_fh[cbio_short] = open(cbio_short + '.strelka.vep.filtered.maf', 'w')
-        cnv_fh[cbio_short] = open(cbio_short + '.predicted_cnv.txt', 'w')
+        if skip_data != 'y':
+            maf_fh[cbio_short] = open(cbio_short + '.strelka.vep.filtered.maf', 'w')
+            cnv_fh[cbio_short] = open(cbio_short + '.predicted_cnv.txt', 'w')
+            maf_fh[cbio_short].write(header)
+            cnv_fh[cbio_short].write('Hugo_Symbol\tEntrez_Gene_Id')
 
         sample_fh[cbio_short] = open(cbio_short + '/data_clinical_sample.txt', 'w')
         sample_fh[cbio_short].write(samp_head)
         patient_fh[cbio_short] = open(cbio_short + '/data_clinical_patient.txt', 'w')
         patient_fh[cbio_short].write(pt_head)
-        maf_fh[cbio_short].write(header)
-        cnv_fh[cbio_short].write('Hugo_Symbol\tEntrez_Gene_Id')
+
 
 dx_fh.close()
 
@@ -124,6 +128,7 @@ for i in range(0, 5, 1):
 cnv_dict = {}
 s_dict = {}
 
+
 for line in mega_sample_sheet:
     data = line.rstrip('\n').split('\t')
     dx = data[3]
@@ -133,42 +138,45 @@ for line in mega_sample_sheet:
     norm_id = data[-2]
     if data[3] != '':
         if pt_id not in pt_dict:
-            pt_dict[pt_id] = []
+            pt_dict[pt_id] = {}
         dx_list = dx.split(';')
         for cbttc_dx in dx_list:
             cbio_short = dx_dict[cbttc_dx]
-            pt_dict[pt_id].append(cbio_short)
+            pt_dict[pt_id][cbio_short] = 1
             sample_fh[cbio_short].write(line)
-            for bs_id in bs_ids:
-                if bs_id in dna_task_dict:
-                    sys.stderr.write('DNA data found for ' + bs_id + '\n')
-                    cur_maf = maf_dir + '/' + dna_task_dict[bs_id] + maf_suffix
-                    sys.stderr.write('Processing maf ' + cur_maf + '\n')
-                    sys.stderr.flush()
-                    process_maf(cur_maf, maf_exc, maf_fh[cbio_short], samp_id, norm_id)
-                    sys.stderr.write('Completed processing ' + cur_maf + '\n')
-                    cur_cnv = cnv_dir + '/' + dna_task_dict[bs_id] + cnv_suffix
-                    sys.stderr.write('Processing cnv ' + cur_cnv + '\n')
-                    sys.stderr.flush()
-                    (cnv_dict, s_dict) = process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cur_cnv)
-                    sys.stderr.write('Completed processing ' + cur_cnv + '\n')
-                    sys.stderr.flush()
+            if skip_data != 'y':
+                for bs_id in bs_ids:
+                    if bs_id in dna_task_dict:
+                        sys.stderr.write('DNA data found for ' + bs_id + '\n')
+                        cur_maf = maf_dir + '/' + dna_task_dict[bs_id] + maf_suffix
+                        sys.stderr.write('Processing maf ' + cur_maf + '\n')
+                        sys.stderr.flush()
+                        process_maf(cur_maf, maf_exc, maf_fh[cbio_short], samp_id, norm_id)
+                        sys.stderr.write('Completed processing ' + cur_maf + '\n')
+                        cur_cnv = cnv_dir + '/' + dna_task_dict[bs_id] + cnv_suffix
+                        sys.stderr.write('Processing cnv ' + cur_cnv + '\n')
+                        sys.stderr.flush()
+                        (cnv_dict, s_dict) = process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cur_cnv)
+                        sys.stderr.write('Completed processing ' + cur_cnv + '\n')
+                        sys.stderr.flush()
 mega_sample_sheet.close()
-sys.stderr.write('Completed iterating through sample sheet. Outputting cnv files\n')
 
-for dx in cnv_dict:
-    sys.stderr.write('Outputting data for dx ' + dx + '\n')
-    sys.stderr.flush()
-    cnv_fh[dx].write('\t' + '\t'.join(s_dict[dx]) + '\n')
-    for gene in cnv_dict[dx]:
-        cnv_fh[dx].write(gene)
-        for samp in s_dict[dx]:
-            if samp in cnv_dict[dx][gene]:
-                cnv_fh[dx].write('\t' + cnv_dict[dx][gene][samp])
-            else:
-                cnv_fh[dx].write('\t2')
-        cnv_fh[dx].write('\n')
-    cnv_fh[dx].close()
+if skip_data != 'y':
+    sys.stderr.write('Completed iterating through sample sheet. Outputting cnv files\n')
+
+    for dx in cnv_dict:
+        sys.stderr.write('Outputting data for dx ' + dx + '\n')
+        sys.stderr.flush()
+        cnv_fh[dx].write('\t' + '\t'.join(s_dict[dx]) + '\n')
+        for gene in cnv_dict[dx]:
+            cnv_fh[dx].write(gene)
+            for samp in s_dict[dx]:
+                if samp in cnv_dict[dx][gene]:
+                    cnv_fh[dx].write('\t' + cnv_dict[dx][gene][samp])
+                else:
+                    cnv_fh[dx].write('\t2')
+            cnv_fh[dx].write('\n')
+        cnv_fh[dx].close()
 
 sys.stderr.write('Outputting dx-specific patient info\n')
 sys.stderr.flush()
