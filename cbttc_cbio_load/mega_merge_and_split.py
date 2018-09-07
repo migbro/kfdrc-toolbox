@@ -86,10 +86,11 @@ for line in dx_fh:
     info = line.rstrip('\n').split('\t')
     cbttc_dx = info[0]
     cbio_short = info[1]
+    dx_dict[cbttc_dx] = cbio_short
     if cbio_short not in temp:
         temp[cbio_short] = 1
         os.mkdir(cbio_short)
-        dx_dict[cbttc_dx] = cbio_short
+
         maf_fh[cbio_short] = open(cbio_short + '.strelka.vep.filtered.maf', 'w')
         cnv_fh[cbio_short] = open(cbio_short + '.predicted_cnv.txt', 'w')
 
