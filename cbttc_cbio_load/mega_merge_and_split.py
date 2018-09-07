@@ -90,9 +90,9 @@ for line in dx_fh:
     maf_fh[cbio_short] = open(cbio_short + '.strelka.vep.filtered.maf', 'w')
     cnv_fh[cbio_short] = open(cbio_short + '.predicted_cnv.txt', 'w')
 
-    sample_fh[cbio_short] = open(cbio_short + '/data_clinical_sample.txt')
+    sample_fh[cbio_short] = open(cbio_short + '/data_clinical_sample.txt', 'w')
     sample_fh[cbio_short].write(samp_head)
-    patient_fh[cbio_short] = open(cbio_short + '/data_clinical_patient.txt')
+    patient_fh[cbio_short] = open(cbio_short + '/data_clinical_patient.txt', 'w')
     patient_fh[cbio_short].write(pt_head)
     maf_fh[cbio_short].write(header)
     cnv_fh[cbio_short].write('Hugo_Symbol\tEntrez_Gene_Id')
