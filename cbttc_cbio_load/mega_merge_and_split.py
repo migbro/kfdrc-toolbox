@@ -115,7 +115,7 @@ for line in dna_sheet:
     if info[2] not in blacklist:
         dna_task_dict[info[2]] = info[-2]
 
-maf_suffix = 'strelka.vep.maf'
+maf_suffix = '.strelka.vep.maf'
 cnv_suffix = '.CNVs.Genes.copy_number'
 
 pt_dict = {}
