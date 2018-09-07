@@ -191,6 +191,7 @@ for line in mega_patient_sheet:
 for keys in patient_fh:
     patient_fh[keys].close()
     sample_fh[keys].close()
-    cnv_fh[keys].close()
-    maf_fh[keys].close()
+    if skip_data != 'y':
+        cnv_fh[keys].close()
+        maf_fh[keys].close()
 sys.stderr.write('Fin!\n')
