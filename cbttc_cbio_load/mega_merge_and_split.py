@@ -58,7 +58,7 @@ header = '#version 2.4\nHugo_Symbol\tEntrez_Gene_Id\tCenter\tChromosome\tStart_P
          '\tflanking_bps\tvariant_id\tvariant_qual\tExAC_AF_Adj\tExAC_AC_AN_Adj\tExAC_AC_AN\tExAC_AC_AN_AFR' \
          '\tExAC_AC_AN_AMR\tExAC_AC_AN_EAS\tExAC_AC_AN_FIN\tExAC_AC_AN_NFE\tExAC_AC_AN_OTH\tExAC_AC_AN_SAS' \
          '\tExAC_FILTER\tgnomAD_AF\tgnomAD_AFR_AF\tgnomAD_AMR_AF\tgnomAD_ASJ_AF\tgnomAD_EAS_AF\tgnomAD_FIN_AF' \
-         '\tgnomAD_NFE_AF\tgnomAD_OTH_AF\tgnomAD_SAS_AF'
+         '\tgnomAD_NFE_AF\tgnomAD_OTH_AF\tgnomAD_SAS_AF\n'
 dx_dict = {}
 maf_fh = {}
 cnv_fh = {}
@@ -140,25 +140,28 @@ for line in mega_sample_sheet:
         if pt_id not in pt_dict:
             pt_dict[pt_id] = {}
         dx_list = dx.split(';')
+        temp = {}
         for cbttc_dx in dx_list:
             cbio_short = dx_dict[cbttc_dx]
-            pt_dict[pt_id][cbio_short] = 1
-            sample_fh[cbio_short].write(line)
-            if skip_data != 'y':
-                for bs_id in bs_ids:
-                    if bs_id in dna_task_dict:
-                        sys.stderr.write('DNA data found for ' + bs_id + '\n')
-                        cur_maf = maf_dir + '/' + dna_task_dict[bs_id] + maf_suffix
-                        sys.stderr.write('Processing maf ' + cur_maf + '\n')
-                        sys.stderr.flush()
-                        process_maf(cur_maf, maf_exc, maf_fh[cbio_short], samp_id, norm_id)
-                        sys.stderr.write('Completed processing ' + cur_maf + '\n')
-                        cur_cnv = cnv_dir + '/' + dna_task_dict[bs_id] + cnv_suffix
-                        sys.stderr.write('Processing cnv ' + cur_cnv + '\n')
-                        sys.stderr.flush()
-                        (cnv_dict, s_dict) = process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cur_cnv)
-                        sys.stderr.write('Completed processing ' + cur_cnv + '\n')
-                        sys.stderr.flush()
+            if cbio_short not in temp:
+                pt_dict[pt_id][cbio_short] = 1
+                sample_fh[cbio_short].write(line)
+                temp[cbio_short] = 1
+                if skip_data != 'y':
+                    for bs_id in bs_ids:
+                        if bs_id in dna_task_dict:
+                            sys.stderr.write('DNA data found for ' + bs_id + '\n')
+                            cur_maf = maf_dir + '/' + dna_task_dict[bs_id] + maf_suffix
+                            sys.stderr.write('Processing maf ' + cur_maf + '\n')
+                            sys.stderr.flush()
+                            process_maf(cur_maf, maf_exc, maf_fh[cbio_short], samp_id, norm_id)
+                            sys.stderr.write('Completed processing ' + cur_maf + '\n')
+                            cur_cnv = cnv_dir + '/' + dna_task_dict[bs_id] + cnv_suffix
+                            sys.stderr.write('Processing cnv ' + cur_cnv + '\n')
+                            sys.stderr.flush()
+                            (cnv_dict, s_dict) = process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cur_cnv)
+                            sys.stderr.write('Completed processing ' + cur_cnv + '\n')
+                            sys.stderr.flush()
 mega_sample_sheet.close()
 
 if skip_data != 'y':
