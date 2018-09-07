@@ -118,13 +118,13 @@ maf_suffix = 'strelka.vep.maf'
 cnv_suffix = '.CNVs.Genes.copy_number'
 
 pt_dict = {}
-next(mega_patient_sheet)
-next(mega_patient_sheet)
+for i in range(0, 5, 1):
+    next(mega_sample_sheet)
 
 cnv_dict = {}
 s_dict = {}
 
-for line in mega_patient_sheet:
+for line in mega_sample_sheet:
     data = line.rstrip('\n').split('\t')
     dx = data[3]
     pt_id = data[0]
@@ -172,6 +172,9 @@ for dx in cnv_dict:
 
 sys.stderr.write('Outputting dx-specific patient info\n')
 sys.stderr.flush()
+
+for i in range(0, 5, 1):
+    next(mega_patient_sheet)
 for line in mega_patient_sheet:
     pt_data = line.rstrip('\n').split('\t')
     if pt_data[0] in pt_dict:
