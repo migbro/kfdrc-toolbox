@@ -10,7 +10,7 @@ def process_maf(maf_file, maf_exc, out_fh, samp_id, norm_id):
     next(maf_read)
     fcol = 8
     for var in maf_read:
-        var_data = var.rstrip('\t').split('\n')
+        var_data = var.rstrip('\n').split('\t')
         if var_data[fcol] not in maf_exc:
             var_data[15] = samp_id
             var_data[16] = norm_id
@@ -144,12 +144,12 @@ for line in mega_sample_sheet:
                 if bs_id in dna_task_dict:
                     sys.stderr.write('DNA data found for ' + bs_id + '\n')
                     cur_maf = maf_dir + '/' + dna_task_dict[bs_id] + maf_suffix
-                    sys.stderr.write('Processing maf ' + cur_maf)
+                    sys.stderr.write('Processing maf ' + cur_maf + '\n')
                     sys.stderr.flush()
                     process_maf(cur_maf, maf_exc, maf_fh[cbio_short], samp_id, norm_id)
                     sys.stderr.write('Completed processing ' + cur_maf + '\n')
                     cur_cnv = cnv_dir + '/' + dna_task_dict[bs_id] + cnv_suffix
-                    sys.stderr.write('Processing cnv ' + cur_cnv)
+                    sys.stderr.write('Processing cnv ' + cur_cnv + '\n')
                     sys.stderr.flush()
                     (cnv_dict, s_dict) = process_cnv(cbio_short, cnv_dict, s_dict, samp_id, cur_cnv)
                     sys.stderr.write('Completed processing ' + cur_cnv + '\n')
