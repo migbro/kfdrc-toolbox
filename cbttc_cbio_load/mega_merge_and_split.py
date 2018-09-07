@@ -87,6 +87,7 @@ for line in dx_fh:
     cbttc_dx = info[0]
     cbio_short = info[1]
     if cbio_short not in temp:
+        temp[cbio_short] = 1
         os.mkdir(cbio_short)
         dx_dict[cbttc_dx] = cbio_short
         maf_fh[cbio_short] = open(cbio_short + '.strelka.vep.filtered.maf', 'w')
