@@ -81,21 +81,23 @@ pt_head = '#Patient Identifier\tGENDER\tAGE\tTUMOR_SITE\tRACE\tETHNICITY\n#Patie
 
 blacklist = {}
 next(dx_fh)
+temp = {}
 for line in dx_fh:
     info = line.rstrip('\n').split('\t')
     cbttc_dx = info[0]
     cbio_short = info[1]
-    os.mkdir(cbio_short)
-    dx_dict[cbttc_dx] = cbio_short
-    maf_fh[cbio_short] = open(cbio_short + '.strelka.vep.filtered.maf', 'w')
-    cnv_fh[cbio_short] = open(cbio_short + '.predicted_cnv.txt', 'w')
+    if cbio_short not in temp:
+        os.mkdir(cbio_short)
+        dx_dict[cbttc_dx] = cbio_short
+        maf_fh[cbio_short] = open(cbio_short + '.strelka.vep.filtered.maf', 'w')
+        cnv_fh[cbio_short] = open(cbio_short + '.predicted_cnv.txt', 'w')
 
-    sample_fh[cbio_short] = open(cbio_short + '/data_clinical_sample.txt', 'w')
-    sample_fh[cbio_short].write(samp_head)
-    patient_fh[cbio_short] = open(cbio_short + '/data_clinical_patient.txt', 'w')
-    patient_fh[cbio_short].write(pt_head)
-    maf_fh[cbio_short].write(header)
-    cnv_fh[cbio_short].write('Hugo_Symbol\tEntrez_Gene_Id')
+        sample_fh[cbio_short] = open(cbio_short + '/data_clinical_sample.txt', 'w')
+        sample_fh[cbio_short].write(samp_head)
+        patient_fh[cbio_short] = open(cbio_short + '/data_clinical_patient.txt', 'w')
+        patient_fh[cbio_short].write(pt_head)
+        maf_fh[cbio_short].write(header)
+        cnv_fh[cbio_short].write('Hugo_Symbol\tEntrez_Gene_Id')
 
 dx_fh.close()
 
