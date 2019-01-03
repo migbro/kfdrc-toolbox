@@ -7,7 +7,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
   - class: DockerRequirement
-    dockerPull: 'kfdrc/samtools:1.8-dev'
+    dockerPull: 'kfdrc/samtools:1.9'
   - class: ResourceRequirement
     coresMin: 16
 baseCommand: [samtools, view]
