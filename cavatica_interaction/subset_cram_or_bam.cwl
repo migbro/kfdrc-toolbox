@@ -9,13 +9,13 @@ requirements:
   - class: DockerRequirement
     dockerPull: 'kfdrc/samtools:1.9'
   - class: ResourceRequirement
-    coresMin: 16
+    coresMin: 36
 baseCommand: [samtools, view]
 arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      -T $(inputs.reference.path) -@ 16 -bhs $(inputs.fraction) $(inputs.input_align.path) > $(inputs.output_bam_basename + ".bam")
+      -T $(inputs.reference.path) -@ 36 -bhs $(inputs.fraction) $(inputs.input_align.path) > $(inputs.output_bam_basename + ".bam")
 inputs:
   input_align: File
   reference: {type: File, secondaryFiles: [.fai]}
