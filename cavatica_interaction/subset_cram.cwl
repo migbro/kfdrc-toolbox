@@ -1,7 +1,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 id: cram_file_subset
-label: Subset align file
+label: Subset cram file
 doc: Utility to subset an existing cram for testing purposes
 requirements:
   - class: InlineJavascriptRequirement

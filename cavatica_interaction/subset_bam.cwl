@@ -1,8 +1,8 @@
 cwlVersion: v1.0
 class: CommandLineTool
-id: cram_file_subset
-label: Subset align file
-doc: Utility to subset an existing cram for testing purposes
+id: bam_file_subset
+label: Subset bam file
+doc: Utility to subset an existing bam for testing purposes
 requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
