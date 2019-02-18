@@ -34,11 +34,11 @@ draft_tasks = api.tasks.query(project=args.project, status='DRAFT')
 running_tasks = api.tasks.query(project=args.project, status='RUNNING')
 cur_run = len(running_tasks)
 out_fh = open(args.output, 'a')
-out_fh.write(date_time() + ' checking draft/running jobs for project ' + args.project + '\n')
+out_fh.write(date_time() + 'Checking draft/running jobs for project ' + args.project + '\n')
 if len(draft_tasks) == 0:
     out_fh.write('0 tasks in draft.  Exiting.\n')
 elif cur_run >= limit:
-    out_fh.write('Num of tasks run at or above max specified: ' + str(cur_run) + ' running jobs, limit set:'
+    out_fh.write('Num of tasks run at or above max specified: ' + str(cur_run) + ' running jobs, limit set: '
                  + args.num_jobs + '\n')
 else:
     out_fh.write(str(limit-cur_run) + ' spots open for submission\n')
