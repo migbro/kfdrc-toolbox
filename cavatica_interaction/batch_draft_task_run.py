@@ -47,5 +47,5 @@ else:
         stop = len(draft_tasks)
     for i in range(cur_run, stop):
         draft_tasks[i].run()
-        out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name)
+        out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + '\n')
 out_fh.close()
