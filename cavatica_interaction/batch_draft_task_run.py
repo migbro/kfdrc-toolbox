@@ -43,9 +43,13 @@ elif cur_run >= limit:
 else:
     out_fh.write(str(limit-cur_run) + ' spots open for submission\n')
     stop = limit
+    start = cur_run
     if len(draft_tasks) < stop:
-        stop = len(draft_tasks)
-    for i in range(cur_run, stop):
+        stop = limit - cur_run
+        if stop > len(draft_tasks):
+            stop = len(draft_tasks)
+        start = 0
+    for i in range(start, stop):
         draft_tasks[i].run()
         out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + '\n')
 out_fh.close()
