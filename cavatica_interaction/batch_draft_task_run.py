@@ -30,8 +30,8 @@ api = sbg.Api(config=config, error_handlers=[rate_limit_sleeper, maintenance_sle
 
 
 limit = int(args.num_jobs)
-draft_tasks = api.tasks.query(project=args.project, status='DRAFT').all()
-running_tasks = api.tasks.query(project=args.project, status='RUNNING').all()
+draft_tasks = list(api.tasks.query(project=args.project, status='DRAFT').all())
+running_tasks = list(api.tasks.query(project=args.project, status='RUNNING').all())
 cur_run = len(running_tasks)
 out_fh = open(args.output, 'a')
 out_fh.write(date_time() + 'Checking draft/running jobs for project ' + args.project + '\n')
