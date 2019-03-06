@@ -15,7 +15,8 @@ arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      -T $(inputs.reference.path) -@ 36 -bhs $(inputs.fraction) $(inputs.input_align.path) > $(inputs.output_bam_basename + ".bam")
+      -T $(inputs.reference.path) -@ 36 -bhs $(inputs.fraction) -C $(inputs.input_align.path) > $(inputs.output_bam_basename).cram &&
+      samtools index $(inputs.output_bam_basename).cram $(inputs.output_bam_basename).cram.crai
 inputs:
   input_align: File
   reference: {type: File, secondaryFiles: [.fai]}
@@ -25,5 +26,5 @@ outputs:
   output:
     type: File
     outputBinding:
-      glob: '*.bam'
-    secondaryFiles: [^.bai]
+      glob: "$(inputs.output_bam_basename).cram"
+    secondaryFiles: [.crai]
