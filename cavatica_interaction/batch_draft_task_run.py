@@ -5,7 +5,7 @@ import argparse
 from sevenbridges.http.error_handlers import rate_limit_sleeper, maintenance_sleeper
 import sys
 import time
-
+import re
 
 def date_time():
     cur = ">" + time.strftime("%c") + '\n'
@@ -18,6 +18,7 @@ parser.add_argument('-p', '--project', action='store', dest='project', help='cav
 parser.add_argument('-q', '--profile', action='store', dest='profile', help='cavatica profile name')
 parser.add_argument('-j', '--num-jobs', action='store', dest='num_jobs', help='Num jobs to keep running')
 parser.add_argument('-o', '--output', action='store', dest='output', help='Output log file name')
+parser.add_argument('-x', '--prefix', action='store', dest='prefix', help='Task prefix ro run.  Set to ALL if any draft task should run')
 
 if len(sys.argv) == 1:
     parser.print_help()
@@ -52,6 +53,9 @@ else:
             stop = len(draft_tasks)
         start = 0
     for i in range(start, stop):
-        draft_tasks[i].run()
-        out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + '\n')
+        if args.prefix == 'ALL' or re.search(args.prefix, draft_tasks[i].name):
+            draft_tasks[i].run()
+            out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + '\n')
+        else:
+            out_fh.write('Task ' + + draft_tasks[i].id + ' ' + draft_tasks[i].name + ' skipped, prefix ' + args.prefix + ' did not match\n')
 out_fh.close()
