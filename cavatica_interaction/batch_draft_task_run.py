@@ -57,5 +57,5 @@ else:
             draft_tasks[i].run()
             out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + '\n')
         else:
-            out_fh.write('Task ' + + draft_tasks[i].id + ' ' + draft_tasks[i].name + ' skipped, prefix ' + args.prefix + ' did not match\n')
+            out_fh.write('Task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + ' skipped, prefix ' + args.prefix + ' did not match\n')
 out_fh.close()
