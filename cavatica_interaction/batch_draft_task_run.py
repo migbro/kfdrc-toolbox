@@ -14,7 +14,7 @@ def date_time():
 
 parser = argparse.ArgumentParser(description='Run a subset of drafted tasks at all times.'
                                              'Use in conjunction with cron tab')
-parser.add_argument('-p', '--project', action='store', dest='project', help='cavatica file id list')
+parser.add_argument('-p', '--project', action='store', dest='project', help='cavatica user/project name')
 parser.add_argument('-q', '--profile', action='store', dest='profile', help='cavatica profile name')
 parser.add_argument('-j', '--num-jobs', action='store', dest='num_jobs', help='Num jobs to keep running')
 parser.add_argument('-o', '--output', action='store', dest='output', help='Output log file name')
