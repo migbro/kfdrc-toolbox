@@ -18,6 +18,7 @@ arguments:
       -@ 36 $(inputs.input_align.path) > $(inputs.input_align.nameroot).flagstat
 inputs:
   input_align: File
+  reference: {type: File, secondaryFiles: [.fai]}
 outputs:
   output:
     type: File
