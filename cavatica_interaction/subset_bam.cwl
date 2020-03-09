@@ -15,9 +15,9 @@ arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      -@ 16 -bhs $(inputs.fraction) $(inputs.input_align.path) > $(inputs.output_bam_basename + ".bam")
+      -@ 16 -bhs $(inputs.fraction) $(inputs.input_align.path) > $(inputs.output_bam_basename).bam
 
-      samtools index $(inputs.output_bam_basename + ".bam"  $(inputs.output_bam_basename + ".bai"
+      samtools index $(inputs.output_bam_basename).bam  $(inputs.output_bam_basename).bai
 inputs:
   input_align: File
   output_bam_basename: string
