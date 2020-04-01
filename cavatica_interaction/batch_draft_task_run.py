@@ -54,8 +54,12 @@ else:
         start = 0
     for i in range(start, stop):
         if args.prefix == 'ALL' or re.search(args.prefix, draft_tasks[i].name):
-            draft_tasks[i].run()
-            out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + '\n')
+            try:
+                draft_tasks[i].run()
+                out_fh.write('Running task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + '\n')
+            except Exception as e:
+                sys.stderr.write(str(e) + '\n')
+                sys.stderr.write('Could not run task name: ' + draft_tasks[i].name + " task id: " + draft_tasks[i].id + " skipping!\n")
         else:
             out_fh.write('Task ' + draft_tasks[i].id + ' ' + draft_tasks[i].name + ' skipped, prefix ' + args.prefix + ' did not match\n')
 out_fh.close()
