@@ -16,7 +16,7 @@ args = parser.parse_args()
 
 def update_file_paths(manifest, yaml_obj):
     mf = open(manifest)
-    head = next(manifest)
+    head = next(mf)
     # see if more than one file exists for input keys - will determine if values is to be File or File[]
     in_dict = {}
     for entry in mf:
@@ -37,7 +37,10 @@ def update_file_paths(manifest, yaml_obj):
 
 yaml.preserve_quotes = True
 
+# round tripper preservers order and formatting of keys and values
 data = yaml.load(open(args.cwl), yaml.RoundTripLoader)
+if args.files:
+    update_file_paths(args.files, data)
 # check for license, pub
 if 'sbg:license' not in data:
     data['sbg:license'] = "Apache License 2.0"
