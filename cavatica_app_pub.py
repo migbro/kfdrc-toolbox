@@ -35,10 +35,9 @@ def update_file_paths(manifest, yaml_obj):
             yaml_obj['inputs'][key]['sbg:suggestedValue'] = {'class': 'File', 'path': fid, 'name': in_dict[key][fid]}
 
 
-yaml.preserve_quotes = True
 
 # round tripper preservers order and formatting of keys and values
-data = yaml.load(open(args.cwl), yaml.RoundTripLoader)
+data = yaml.load(open(args.cwl), yaml.RoundTripLoader, preserve_quotes=True)
 if args.files:
     update_file_paths(args.files, data)
 # check for license, pub
