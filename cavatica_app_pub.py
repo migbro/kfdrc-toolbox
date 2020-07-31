@@ -7,6 +7,7 @@ import pdb
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input-cwl', action='store', dest='cwl', help='Input cwl file',required=True)
 parser.add_argument('-r', '--readme', action='store', dest='readme', help='Readme file to insert into workflow/tool doc, if applicable', required=False)
+parser.add_argument('-n', '--id-name', action='store', dest='id_name', help='Short app ID link name to use, i.e. kfdrc-align-wf', required=False)
 parser.add_argument('-l', '--label', action='store', dest='label', help='User-friendly label to add to tool/workflow cwl, if needed', required=False)
 parser.add_argument('-t', '--tags', action='store', dest='tags', help='Seven bridges tags file, as csv string, ex RNASEQ,FUSION', required=False)
 parser.add_argument('-f', '--files', action='store', dest='files', help='Cavatica-style tsv manifest with file ID, file name, and associated cwl input key', required=False)
@@ -67,5 +68,11 @@ if args.readme:
             data.insert(key_list.index('id')+1, 'doc', rm_str)
     else:
         data['doc'] = rm_str
+if args.id_name:
+    key_list = list(data.keys())
+    if 'id' not in data:
+        data.insert(key_list.index('class')+1, 'id', args.id_name)
+    else:
+        data['id'] = args.id_name
 
 yaml.dump(data, sys.stdout, Dumper=yaml.RoundTripDumper)
