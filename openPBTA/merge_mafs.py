@@ -6,7 +6,7 @@ import re
 
 parser = argparse.ArgumentParser(description='Run a subset of drafted tasks at all times.'
                                              'Use in conjunction with cron tab')
-parser.add_argument('-h', '--header', action='store', dest='header', help='maf header')
+parser.add_argument('-i', '--header', action='store', dest='header', help='maf header')
 parser.add_argument('-d', '--dir', action='store', dest='dir', help='file input dir')
 parser.add_argument('-m', '--manifest', action='store', dest='manifest', help='cavatica manifest')
 # parser.add_argument('-f', '--flag', action='store_true', dest='flag', help='flag to edit sample names to shorter style for TCGA')
@@ -61,7 +61,7 @@ mhead = next(manifest)
 #     n_idx = cols.idx("Matched_Norm_Sample_Barcode")
 for line in manifest:
     info = line.rstrip('\n').split(',')
-    if args.caller == "ALL" or re.search(arga.caller, info[1]):
+    if args.caller == "ALL" or re.search(args.caller, info[1]):
         current = args.dir + "/" + info[1]
         process_maf(current)
 out.close()
