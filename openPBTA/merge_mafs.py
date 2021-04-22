@@ -2,6 +2,7 @@ import argparse
 import sys
 import concurrent.futures
 import re
+import pdb
 
 
 parser = argparse.ArgumentParser(description='Run a subset of drafted tasks at all times.'
@@ -11,7 +12,7 @@ parser.add_argument('-d', '--dir', action='store', dest='dir', help='file input 
 parser.add_argument('-m', '--manifest', action='store', dest='manifest', help='cavatica manifest')
 # parser.add_argument('-f', '--flag', action='store_true', dest='flag', help='flag to edit sample names to shorter style for TCGA')
 parser.add_argument('-c', '--caller', action='store', dest='caller', help='Set as ALL to process all, or enter caller name')
-parser.add_argument('-o', '--out', action='store', dest='flag', help='output file name')
+parser.add_argument('-o', '--out', action='store', dest='out', help='output file name')
 
 
 # def process_rename(file_handle, t_idx, n_idx):
@@ -19,16 +20,17 @@ parser.add_argument('-o', '--out', action='store', dest='flag', help='output fil
 #     data = entry.rstrip('\n').split('\t')
 #     data[t_idx] = "data[t_idx].split("_")
 
-def process_norm(file_handle):
-    entry = next(file_handle)
-    return entry
+def process_norm(maf_line):
+    return maf_line
 
 
 def process_maf(file_name):
     file_handle = open(file_name)
+    # pdb.set_trace()
     sys.stderr.write("Processing " + file_name + "\n")
-    skip = next(file_handle)
-    skip = next(file_handle)
+    # skip header lines
+    next(file_handle)
+    next(file_handle)
     # if args.flag:
     with concurrent.futures.ThreadPoolExecutor(40) as executor:
         results = {executor.submit(process_norm, data): data for data in file_handle}
@@ -36,7 +38,6 @@ def process_maf(file_name):
             if result.result() is not None:
                 out.write(result.result())
     sys.stderr.write("Completed processing file\n")
-
 
 
 if len(sys.argv) == 1:
