@@ -16,7 +16,7 @@ steps:
     in:
       example_vcf: example_vcf
       input_vcf: input_vcfs
-    scatter: [input_vcfs]
+    scatter: [input_vcf]
     out: [reheadered]
 $namespaces:
   sbg: https://sevenbridges.com
