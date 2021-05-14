@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: Workflow
-id: ngs_checkmate_wf
+id: replace_contigs_scatter
 doc: "A wrapper workflow to reheader VCF files in bulk"
 requirements:
   - class: ScatterFeatureRequirement
