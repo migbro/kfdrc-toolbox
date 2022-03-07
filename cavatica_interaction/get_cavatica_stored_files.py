@@ -55,12 +55,16 @@ def iterate_folder(folder_obj):
 
 
 def check_file(file_obj):
-    if file_obj.storage.volume is None:
-        print(file_obj.id + "\t" + file_obj.name + "\t" + str(file_obj.size) + "\t" + str(file_obj.size/1073741824))
+    print(file_obj.id + "\t" + file_obj.name + "\t" + str(file_obj.size) + "\t" + str(file_obj.size/1073741824) + "\t" + file_obj.storage.type)
+    # if file_obj.storage.volume is None:
+    #     print(file_obj.id + "\t" + file_obj.name + "\t" + str(file_obj.size) + "\t" + str(file_obj.size/1073741824))
+    # else:
+    #     pdb.set_trace()
+    #     hold=1
 
 
 files = api.files.query(project=args.project).all()
-print("File ID\tFile Name\tFile Size bytes\tFile Size GB")
+print("File ID\tFile Name\tFile Size bytes\tFile Size GB\tStorage type")
 for f in files:
     try:
         if f.is_folder():
